@@ -2,6 +2,7 @@ package com.devtalles.medassistant.controller;
 
 import com.devtalles.medassistant.dto.ChatRequest;
 import com.devtalles.medassistant.service.AssistantService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -30,6 +31,23 @@ public class ChatController {
         return assistantService.chatStream(request.prompt(), request.model());
     }
 
+    @PostMapping("/explain")
+    private ResponseEntity<String> explainCondition(@Valid @RequestBody ChatRequest request){
+        return ResponseEntity.ok(assistantService.explainCondition(request.prompt(), request.model()));
+    }
+
+    @PostMapping("/symptoms")
+    private ResponseEntity<String> analyzeSymptoms(@Valid @RequestBody ChatRequest request){
+        return ResponseEntity.ok(assistantService.analyzeSymptoms(request.prompt(), request.model()));
+    }
+
+    @PostMapping("/diagnose")
+    public ResponseEntity<String> diagnoseWithReasoning(
+            @Valid @RequestBody ChatRequest request) {
+        return ResponseEntity.ok(
+                assistantService.diagnoseWithReasoning(
+                        request.prompt(), request.model()));
+    }
 
 
 }
